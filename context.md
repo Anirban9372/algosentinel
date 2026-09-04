@@ -21,10 +21,10 @@ algosentinel/
 ├── requirements.txt  # Pinned dependencies
 ├── README.md         # Project overview + hackathon write-up
 ├── context.md        # This file — internal project context
-├── agent.py          # Main loop — entry point
+├── agent.py          # Main loop — entry point, CLI account check at startup
 ├── news.py           # Google News RSS headline fetcher
 ├── sentiment.py      # Gemini LLM sentiment scorer
-├── options.py        # SPY options chain selector (ATM-sorted)
+├── options.py        # SPY options chain selector (ATM-sorted, live ask price)
 ├── risk.py           # Risk gate (equity floor, max positions)
 ├── executor.py       # Alpaca order placement
 
@@ -49,6 +49,7 @@ GEMINI_API_KEY=...
 - Expiry window: today + 7 days
 - Order type: Market, DAY
 - Starting balance: $100,000
+- CLI integration: `alpaca account get` called at startup for account status
 
 ## Risk Gates
 - Max 5% equity per trade ($5,000 on $100k)
@@ -65,11 +66,14 @@ GEMINI_API_KEY=...
 - Paper account live at Alpaca
 - Market hours check prevents wasted cycles outside trading window
 - Contract quantity calculated from risk-gated budget
+- CLI integration added — `alpaca account get` runs at startup for hackathon compliance
+- Options module uses live stock data API for real SPY price + live option quotes
 - US market opens 7:00 PM IST — agent must make trades before 8:30 PM IST deadline
 
 ## Known Issues / Warnings
 - Gemini AFC warning on generate_content — cosmetic only, does not affect output
 - Options chain may return empty outside market hours — handled by market hours check
+- CLI `alpaca` command must be installed and on PATH for cli_account_check()
 
 ## What Needs To Happen Next
 1. Start agent at ~6:50 PM IST
@@ -81,7 +85,7 @@ GEMINI_API_KEY=...
 ## Hackathon Requirements Checklist
 - [x] Autonomous AI trading agent
 - [x] Alpaca Trading API used
-- [ ] MCP server or CLI used (not yet integrated — optional)
+- [x] CLI used (alpaca CLI account check at startup)
 - [x] Options trading incorporated
 - [x] Paper trading environment
 - [x] Fresh paper account ($100k starting balance)

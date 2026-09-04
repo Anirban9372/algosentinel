@@ -1,3 +1,4 @@
+import subprocess
 import os
 import math
 import schedule
@@ -34,6 +35,14 @@ def is_market_open() -> bool:
     market_open = now_et.replace(hour=9, minute=30, second=0, microsecond=0)
     market_close = now_et.replace(hour=16, minute=0, second=0, microsecond=0)
     return market_open <= now_et <= market_close
+
+
+def cli_account_check():
+    result = subprocess.run(
+        ["alpaca", "account", "get"],
+        capture_output=True, text=True
+    )
+    print(f"[CLI] Account: {result.stdout[:200]}")
 
 
 def run_agent():
@@ -101,6 +110,7 @@ def run_agent():
 
 if __name__ == "__main__":
     log("ALGOSENTINEL", "Agent starting...")
+    cli_account_check()
     run_agent()
     schedule.every(15).minutes.do(run_agent)
     while True:

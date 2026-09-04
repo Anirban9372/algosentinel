@@ -64,7 +64,8 @@ def get_spy_option(signal: str):
     contracts = client.get_option_contracts(req)
 
     if not contracts.option_contracts:
-        print(f"[OPTIONS] No ATM contracts found (strikes ${strike_lo}–${strike_hi}).")
+        print(
+            f"[OPTIONS] No ATM contracts found (strikes ${strike_lo}–${strike_hi}).")
         return None, 0
 
     # Sort by closest to ATM
@@ -74,7 +75,8 @@ def get_spy_option(signal: str):
     )
 
     best = sorted_contracts[0]
-    print(f"[OPTIONS] Selected: {best.name} | Strike: ${best.strike_price:.2f}")
+    print(
+        f"[OPTIONS] Selected: {best.name} | Strike: ${best.strike_price:.2f}")
 
     # Get live ask price for accurate cost calculation
     try:
