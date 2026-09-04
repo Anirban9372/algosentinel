@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlgoSentinel — Pitch Deck</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #131b2e;
+      --card-border: #263454;
+      --cyan: #00e5ff;
+      --emerald: #00e676;
+      --amber: #ffb300;
+      --red: #ff5252;
+      --purple: #c084fc;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 16:9 Presentation Frame */
+    .deck-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      background: var(--bg);
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 229, 255, 0.1);
+      overflow: hidden;
+      display: flex;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding: 50px 70px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      flex-direction: column;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.99); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .pill {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .pill.emerald {
+      background: rgba(0, 230, 118, 0.1);
+      border-color: var(--emerald);
+      color: var(--emerald);
+    }
+
+    .slide-title {
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 30px;
+      letter-spacing: -0.02em;
+    }
+
+    /* SLIDE 1: Title */
+    .hero-slide {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .hero-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 60px 50px;
+      width: 90%;
+      max-width: 950px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-title {
+      font-size: 64px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin: 15px 0 10px;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--cyan);
+      margin-bottom: 30px;
+    }
+
+    .hero-meta {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* SLIDE 2: Two Column */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      flex: 1;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card.problem {
+      border-color: rgba(255, 82, 82, 0.35);
+      background: linear-gradient(180deg, rgba(255, 82, 82, 0.05) 0%, var(--card-bg) 100%);
+    }
+
+    .card.solution {
+      border-color: rgba(0, 230, 118, 0.35);
+      background: linear-gradient(180deg, rgba(0, 230, 118, 0.05) 0%, var(--card-bg) 100%);
+    }
+
+    .card-header {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .card-header.red { color: var(--red); }
+    .card-header.green { color: var(--emerald); }
+
+    .statement {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+
+    .sub-statement {
+      font-size: 17px;
+      color: #fca5a5;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .bullet-list li {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      display: flex;
+      gap: 8px;
+    }
+
+    .bullet-list.solution-list li {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .bullet-list.solution-list li span {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* SLIDE 3: Flow */
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      flex: 1;
+      margin-bottom: 24px;
+    }
+
+    .pipe-step {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .step-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .pipe-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .pipe-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .banner {
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid var(--cyan);
+      border-radius: 12px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--cyan);
+      letter-spacing: 0.02em;
+    }
+
+    /* SLIDE 4: 3 Columns */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 22px;
+      flex: 1;
+      margin-bottom: 20px;
+    }
+
+    .pillar-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pillar-header {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .pillar-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .pillar-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pillar-item-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-left: 18px;
+      margin-top: 2px;
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .btn {
+      background: #1e293b;
+      color: #fff;
+      border: 1px solid #334155;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #334155;
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    @media print {
+      body {
+        background: none;
+        overflow: visible;
+      }
+      .deck-container {
+        box-shadow: none;
+        page-break-after: always;
+      }
+      .slide {
+        display: flex !important;
+        position: relative;
+        page-break-after: always;
+      }
+      .controls-bar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-container">
+    <!-- SLIDE 1: Title -->
+    <div class="slide hero-slide active" id="slide-1">
+      <div class="hero-card">
+        <div class="pill">Alpaca AI Trading Agents Hackathon</div>
+        <h1 class="hero-title">AlgoSentinel 🛡️</h1>
+        <div class="hero-subtitle">Autonomous AI-Powered Options Trading Agent</div>
+        <div class="hero-meta">
+          <strong>Team AlgoSentinel</strong><br>
+          Live Sentiment Analysis • SPY Options Execution • Pure Disciplined Signal
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: The Problem & Solution -->
+    <div class="slide" id="slide-2">
+      <div class="pill">🎯 Market Challenge & Core Innovation</div>
+      <h2 class="slide-title">The Problem & Our Solution</h2>
+      <div class="grid-2">
+        <div class="card problem">
+          <div class="card-header red">⚠️ The Problem</div>
+          <div class="statement">Most traders are emotional, biased, and slow.</div>
+          <div class="sub-statement">Opportunities in market sentiment die in seconds.</div>
+          <ul class="bullet-list">
+            <li><span>•</span> Human reaction latency misses instant sentiment catalysts in news.</li>
+            <li><span>•</span> Emotional tilt & revenge trading destroy risk management plans.</li>
+            <li><span>•</span> Selecting option strikes and checking ask pricing manually is too slow.</li>
+          </ul>
+        </div>
+        <div class="card solution">
+          <div class="card-header green">⚡ Our Solution</div>
+          <ul class="bullet-list solution-list">
+            <li>
+              → AI reads live news in real-time
+              <span>Pulls SPY & S&P 500 headlines every 15 minutes automatically</span>
+            </li>
+            <li>
+              → Scores sentiment automatically
+              <span>Gemini AI scores macro tone, conviction, and direction</span>
+            </li>
+            <li>
+              → Executes trades instantly
+              <span>Direct Alpaca Paper Trading API order submission</span>
+            </li>
+            <li>
+              → No human delays. No emotion.
+              <span>Pure algorithmic execution governed by strict multi-tier risk gates</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: How It Works -->
+    <div class="slide" id="slide-3">
+      <div class="pill">🧠 Autonomous Trading Architecture</div>
+      <h2 class="slide-title">How It Works: End-to-End Pipeline</h2>
+      <div class="pipeline-grid">
+        <div class="pipe-step">
+          <div class="step-badge" style="background: rgba(0,229,255,0.15); color: var(--cyan);">Step 1</div>
+          <div class="pipe-title">Google News RSS</div>
+          <div class="pipe-desc">Live financial headlines focusing on SPY & S&P 500</div>
+        </div>
+        <div class="pipe-step">
+          <div class="step-badge" style="background: rgba(192,132,252,0.15); color: var(--purple);">Step 2</div>
+          <div class="pipe-title">Gemini Sentiment AI</div>
+          <div class="pipe-desc">LLM scores headlines → BULLISH / BEARISH with confidence</div>
+        </div>
+        <div class="pipe-step">
+          <div class="step-badge" style="background: rgba(255,179,0,0.15); color: var(--amber);">Step 3</div>
+          <div class="pipe-title">Risk Gates (5 Checks)</div>
+          <div class="pipe-desc">Equity floor, max positions, budget, market hours</div>
+        </div>
+        <div class="pipe-step">
+          <div class="step-badge" style="background: rgba(0,229,255,0.15); color: var(--cyan);">Step 4</div>
+          <div class="pipe-title">SPY Options Picker</div>
+          <div class="pipe-desc">Selects closest ATM contract with live ask quote pricing</div>
+        </div>
+        <div class="pipe-step">
+          <div class="step-badge" style="background: rgba(56,189,248,0.15); color: #38bdf8;">Step 5</div>
+          <div class="pipe-title">Alpaca Paper API</div>
+          <div class="pipe-desc">Automated order placement & quantity budgeting</div>
+        </div>
+        <div class="pipe-step">
+          <div class="step-badge" style="background: rgba(0,230,118,0.15); color: var(--emerald);">Step 6</div>
+          <div class="pipe-title">✅ Trade Executed</div>
+          <div class="pipe-desc">Continuous monitor for -50% SL / +100% TP exits</div>
+        </div>
+      </div>
+      <div class="banner">
+        ⚡ Every 15 minutes. Fully autonomous. Zero human intervention needed.
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Why It Matters -->
+    <div class="slide" id="slide-4">
+      <div class="pill emerald">📊 Results & Impact</div>
+      <h2 class="slide-title">Why It Matters: Institutional Discipline for AI</h2>
+      <div class="grid-3">
+        <div class="pillar-card">
+          <div class="pillar-header" style="color: var(--cyan);">🤖 Autonomous & AI-Driven</div>
+          <ul class="pillar-list">
+            <li>
+              <div class="pillar-item-title">⚡ Zero Human Delays</div>
+              <div class="pillar-item-desc">Runs scheduled cycles every 15 min during market hours</div>
+            </li>
+            <li>
+              <div class="pillar-item-title">🧠 Gemini Sentiment Engine</div>
+              <div class="pillar-item-desc">Understands nuances of market headlines</div>
+            </li>
+            <li>
+              <div class="pillar-item-title">📝 Transparent Audit Trail</div>
+              <div class="pillar-item-desc">Every trade or skip logged with timestamp to trades.log</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pillar-card" style="border-color: rgba(255,179,0,0.35);">
+          <div class="pillar-header" style="color: var(--amber);">🛡️ 5-Tier Risk Management</div>
+          <ul class="pillar-list">
+            <li>
+              <div class="pillar-item-title">✓ Equity Floor</div>
+              <div class="pillar-item-desc">Hard stop if account falls below $85,000</div>
+            </li>
+            <li>
+              <div class="pillar-item-title">✓ Max 3 Open Positions</div>
+              <div class="pillar-item-desc">Prevents over-exposure and portfolio strain</div>
+            </li>
+            <li>
+              <div class="pillar-item-title">✓ 5% Per-Trade Cap</div>
+              <div class="pillar-item-desc">Positions sized conservatively from net equity</div>
+            </li>
+            <li>
+              <div class="pillar-item-title">✓ 60% Confidence Threshold</div>
+              <div class="pillar-item-desc">Only trades on strong directional sentiment</div>
+            </li>
+            <li>
+              <div class="pillar-item-title">✓ Market Hours Gate</div>
+              <div class="pillar-item-desc">Only trades 9:30 AM – 4:00 PM ET, Mon-Fri</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pillar-card" style="border-color: rgba(0,230,118,0.35);">
+          <div class="pillar-header" style="color: var(--emerald);">📈 Live Testing & Stack</div>
+          <ul class="pillar-list">
+            <li>
+              <div class="pillar-item-title">💼 Fresh $100k Paper Account</div>
+              <div class="pillar-item-desc">Live on Alpaca Paper Trading environment</div>
+            </li>
+            <li>
+              <div class="pillar-item-title">🎯 Intelligent Auto-Exits</div>
+              <div class="pillar-item-desc">-50% Stop-Loss and +100% Take-Profit rules</div>
+            </li>
+            <li>
+              <div class="pillar-item-title">🛠️ Core Technology Stack</div>
+              <div class="pillar-item-desc">Alpaca Trading API • Google Gemini • Python</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div style="text-align: center; color: var(--text-muted); font-size: 13px;">
+        Built on Alpaca Trading API + Google Gemini • Paper Trading: $100k account • Team AlgoSentinel
+      </div>
+    </div>
+  </div>
+
+  <div class="controls-bar">
+    <button class="btn" onclick="prevSlide()">← Prev</button>
+    <span id="slide-indicator">Slide 1 of 4</span>
+    <button class="btn" onclick="nextSlide()">Next →</button>
+    <button class="btn" onclick="toggleFullScreen()">⛶ Fullscreen (F)</button>
+    <span style="margin-left: 20px;">(Use Arrow Keys to Navigate • Ctrl+P to Export PDF)</span>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 4;
+
+    function showSlide(n) {
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(`slide-${n}`);
+      if (target) {
+        target.classList.add('active');
+        currentSlide = n;
+        document.getElementById('slide-indicator').textContent = `Slide ${currentSlide} of ${totalSlides}`;
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) showSlide(currentSlide - 1);
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'f' || e.key === 'F') toggleFullScreen();
+    });
+  </script>
+</body>
+</html>
