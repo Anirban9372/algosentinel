@@ -16,7 +16,7 @@ Return exactly this format:
 {{"signal": "BULLISH" or "BEARISH" or "NEUTRAL", "confidence": 0.0 to 1.0, "reason": "one line"}}"""
 
     response = client.models.generate_content(
-        model="gemini-1.5-flash",
+        model="gemini-3.6-flash",
         contents=prompt
     )
     clean = response.text.strip().replace("```json", "").replace("```", "").strip()
