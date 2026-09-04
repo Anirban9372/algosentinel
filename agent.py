@@ -43,7 +43,8 @@ def run_agent():
     # Pre-check: market hours
     if not is_market_open():
         now_et = datetime.now(ET)
-        log("AGENT", f"Market closed (ET: {now_et.strftime('%A %I:%M %p')}). Skipping.")
+        log("AGENT",
+            f"Market closed (ET: {now_et.strftime('%A %I:%M %p')}). Skipping.")
         return
 
     # Step 1: News
@@ -92,7 +93,8 @@ def run_agent():
     # Step 6: Execute
     try:
         result = place_option_order(contract.symbol, qty=qty)
-        log("TRADE", f"✅ Order filled — ID: {result.id} | Status: {result.status}")
+        log("TRADE",
+            f"✅ Order filled — ID: {result.id} | Status: {result.status}")
     except Exception as e:
         log("EXECUTOR", f"Order failed: {e}")
 

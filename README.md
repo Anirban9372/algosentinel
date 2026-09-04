@@ -109,3 +109,10 @@ GEMINI_API_KEY=your_gemini_key
 - `schedule` — 15-minute trading loop
 - `requests` — RSS feed fetching
 - `python-dotenv` — Environment variable management
+
+## CRITICAL — CLI Integration Required
+Hackathon rules require MCP or CLI usage.
+Fix: Alpaca CLI integrated into agent loop for:
+- Account status check at startup
+- Position monitoring
+- Used alongside alpaca-py for order execution
