@@ -22,8 +22,8 @@ ET = ZoneInfo("America/New_York")
 CONTRACT_MULTIPLIER = 100
 
 # Exit thresholds
-STOP_LOSS_PCT   = -0.50   # exit at 50% loss
-TAKE_PROFIT_PCT =  1.00   # exit at 100% gain
+STOP_LOSS_PCT = -0.50   # exit at 50% loss
+TAKE_PROFIT_PCT = 1.00   # exit at 100% gain
 
 # Persistent log file
 TRADE_LOG = "trades.log"
@@ -51,7 +51,7 @@ def is_market_open() -> bool:
     now_et = datetime.now(ET)
     if now_et.weekday() >= 5:  # Saturday=5, Sunday=6
         return False
-    market_open  = now_et.replace(hour=9,  minute=30, second=0, microsecond=0)
+    market_open = now_et.replace(hour=9,  minute=30, second=0, microsecond=0)
     market_close = now_et.replace(hour=16, minute=0,  second=0, microsecond=0)
     return market_open <= now_et <= market_close
 
@@ -105,12 +105,14 @@ def monitor_exits(client: TradingClient):
             pl_pct = unrealized_pct * 100
 
             if unrealized_pct <= STOP_LOSS_PCT:
-                log("EXIT", f"🔴 Stop-loss hit on {symbol} ({pl_pct:.1f}%) — closing position")
+                log("EXIT",
+                    f"🔴 Stop-loss hit on {symbol} ({pl_pct:.1f}%) — closing position")
                 log_trade(f"EXIT STOP-LOSS | {symbol} | P&L: {pl_pct:.1f}%")
                 client.close_position(symbol)
 
             elif unrealized_pct >= TAKE_PROFIT_PCT:
-                log("EXIT", f"🟢 Take-profit hit on {symbol} ({pl_pct:.1f}%) — closing position")
+                log("EXIT",
+                    f"🟢 Take-profit hit on {symbol} ({pl_pct:.1f}%) — closing position")
                 log_trade(f"EXIT TAKE-PROFIT | {symbol} | P&L: {pl_pct:.1f}%")
                 client.close_position(symbol)
 
@@ -143,7 +145,8 @@ def run_agent():
     spy_positions = get_spy_option_positions(client)
     if spy_positions:
         symbols = ", ".join(p.symbol for p in spy_positions)
-        log("RISK", f"Already holding SPY options: {symbols} — skipping new entry")
+        log("RISK",
+            f"Already holding SPY options: {symbols} — skipping new entry")
         log_trade(f"SKIP — already holding: {symbols}")
         return
 
