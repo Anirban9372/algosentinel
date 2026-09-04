@@ -28,6 +28,7 @@ def cli_account_check():
     else:
         log("CLI", f"Warning: {result.stderr[:100].strip()}")
 
+
 # US Eastern timezone for market hours check
 ET = ZoneInfo("America/New_York")
 

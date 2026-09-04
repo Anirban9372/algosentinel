@@ -71,12 +71,12 @@ def get_spy_option(signal: str):
     # Sort by closest to ATM
     sorted_contracts = sorted(
         contracts.option_contracts,
-        key=lambda c: abs(c.strike_price - spy_price)
+        key=lambda c: abs(float(c.strike_price) - spy_price)
     )
 
     best = sorted_contracts[0]
     print(
-        f"[OPTIONS] Selected: {best.name} | Strike: ${best.strike_price:.2f}")
+        f"[OPTIONS] Selected: {best.name} | Strike: ${float(best.strike_price):.2f}")
 
     # Get live ask price for accurate cost calculation
     try:
@@ -89,8 +89,8 @@ def get_spy_option(signal: str):
         ask_price = float(quotes[best.symbol].ask_price)
     except Exception:
         # Fallback: rough estimate using intrinsic value + $2 time premium
-        intrinsic = max(0, spy_price - best.strike_price) if contract_type == ContractType.CALL \
-            else max(0, best.strike_price - spy_price)
+        intrinsic = max(0, spy_price - float(best.strike_price)) if contract_type == ContractType.CALL \
+            else max(0, float(best.strike_price) - spy_price)
         ask_price = intrinsic + 2.0
 
     return best, ask_price
