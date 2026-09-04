@@ -1,3 +1,4 @@
+import subprocess
 import os
 import math
 import schedule
@@ -12,6 +13,20 @@ from risk import check_risk
 from executor import place_option_order
 
 load_dotenv()
+
+
+def cli_account_check():
+    result = subprocess.run(
+        ["alpaca", "account", "get"],
+        capture_output=True, text=True,
+        env={**os.environ,
+             "ALPACA_API_KEY": os.getenv("ALPACA_API_KEY"),
+             "ALPACA_SECRET_KEY": os.getenv("ALPACA_SECRET_KEY")}
+    )
+    if result.returncode == 0:
+        log("CLI", f"Account OK — {result.stdout[:100].strip()}")
+    else:
+        log("CLI", f"Warning: {result.stderr[:100].strip()}")
 
 # US Eastern timezone for market hours check
 ET = ZoneInfo("America/New_York")
@@ -101,6 +116,7 @@ def run_agent():
 
 if __name__ == "__main__":
     log("ALGOSENTINEL", "Agent starting...")
+    cli_account_check()
     run_agent()
     schedule.every(15).minutes.do(run_agent)
     while True:
