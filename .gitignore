@@ -1,7 +1,22 @@
+# Python
 .env
 venv/
 __pycache__/
 *.pyc
+*.pyo
 .DS_Store
+
+# Logs
+*.log
+signals.log
 trades.log
 
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Backend
+backend/.env
+backend/__pycache__/
+backend/routes/__pycache__/

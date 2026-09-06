@@ -206,3 +206,45 @@ Every 15 minutes:
 ## ⚠️ Disclaimer
 
 This project is built for a hackathon and uses **paper trading only**. It is not financial advice and should not be used with real money without extensive testing, backtesting, and risk assessment.
+
+---
+
+## 🌐 Live Web Dashboard
+
+A real-time dashboard that shows portfolio value, active positions, AI signals, and trade history.
+
+**Tech stack:** React 18 + Vite + TailwindCSS (frontend) · FastAPI + WebSocket (backend)
+
+### 🚀 Deploy in 2 Steps
+
+#### 1. Backend → Render.com (free tier)
+1. Go to [render.com](https://render.com) → New Web Service
+2. Connect your GitHub repo, set **Root Directory** = `backend`
+3. **Build command:** `pip install -r requirements.txt`
+4. **Start command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
+5. Add these **Environment Variables** in Render dashboard:
+   - `ALPACA_API_KEY` / `ALPACA_SECRET_KEY`
+   - `GOOGLE_API_KEY`
+   - `NEWS_API_KEY`
+   - `ALLOWED_ORIGINS` = `https://your-app.vercel.app`
+
+#### 2. Frontend → Vercel (free tier)
+1. Go to [vercel.com](https://vercel.com) → New Project → Import your GitHub repo
+2. Set **Root Directory** = `frontend`
+3. Add **Environment Variables**:
+   - `VITE_API_URL` = `https://your-render-app.onrender.com`
+   - `VITE_WS_URL` = `wss://your-render-app.onrender.com/ws`
+4. Deploy — Vercel auto-detects Vite.
+
+### Run Locally
+```bash
+# Backend
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+
+# Frontend (new terminal)
+cd frontend
+npm install
+npm run dev   # → http://localhost:5173
+```

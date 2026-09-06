@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+alpaca-py
+google-genai
+python-dotenv
+schedule
+requests
+
