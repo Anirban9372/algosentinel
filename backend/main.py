@@ -1,3 +1,5 @@
+from routes import account, trades, signal
+from agent_runner import run_agent_async
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -7,8 +9,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from agent_runner import run_agent_async
-from routes import account, trades, signal
 
 connected_clients: list[WebSocket] = []
 
