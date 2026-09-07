@@ -46,22 +46,32 @@ def log_trade(msg: str):
     log("LOG", msg)
 
 
-def is_market_open() -> bool:
-    """Check if the US options market is currently open (9:30 AM – 4:00 PM ET, Mon-Fri)."""
-    now_et = datetime.now(ET)
-    if now_et.weekday() >= 5:  # Saturday=5, Sunday=6
-        return False
-    market_open = now_et.replace(hour=9,  minute=30, second=0, microsecond=0)
-    market_close = now_et.replace(hour=16, minute=0,  second=0, microsecond=0)
-    return market_open <= now_et <= market_close
-
-
 def get_trading_client() -> TradingClient:
     return TradingClient(
         api_key=os.getenv("ALPACA_API_KEY"),
         secret_key=os.getenv("ALPACA_SECRET_KEY"),
         paper=True
     )
+
+
+def is_market_open() -> bool:
+    """Check if the US market is open using Alpaca's clock API.
+    This automatically handles weekends AND all US market holidays
+    (Labor Day, Thanksgiving, Christmas, etc.)
+    """
+    try:
+        client = get_trading_client()
+        clock = client.get_clock()
+        return clock.is_open
+    except Exception as e:
+        log("AGENT", f"Clock API error: {e} — falling back to time check")
+        # Fallback: manual check (weekday + hours, no holiday awareness)
+        now_et = datetime.now(ET)
+        if now_et.weekday() >= 5:
+            return False
+        market_open  = now_et.replace(hour=9,  minute=30, second=0, microsecond=0)
+        market_close = now_et.replace(hour=16, minute=0,  second=0, microsecond=0)
+        return market_open <= now_et <= market_close
 
 
 def cli_account_check():
