@@ -42,8 +42,12 @@ def get_spy_option(signal: str):
         return None, 0
     print(f"[OPTIONS] SPY price: ${spy_price:.2f}")
 
-    today = datetime.now().strftime("%Y-%m-%d")
-    expiry = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
+    today = datetime.now()
+    today_str = today.strftime("%Y-%m-%d")
+    # Skip 0-DTE and 1-DTE — theta decay destroys these overnight
+    # Prefer contracts expiring 2–5 days out
+    min_expiry = (today + timedelta(days=2)).strftime("%Y-%m-%d")
+    max_expiry = (today + timedelta(days=5)).strftime("%Y-%m-%d")
     contract_type = ContractType.CALL if signal == "BULLISH" else ContractType.PUT
 
     # Filter contracts with strikes near ATM (±3% of SPY price)
@@ -53,8 +57,8 @@ def get_spy_option(signal: str):
 
     req = GetOptionContractsRequest(
         underlying_symbols=["SPY"],
-        expiration_date_gte=today,
-        expiration_date_lte=expiry,
+        expiration_date_gte=min_expiry,
+        expiration_date_lte=max_expiry,
         type=contract_type,
         strike_price_gte=strike_lo,
         strike_price_lte=strike_hi,
@@ -64,19 +68,32 @@ def get_spy_option(signal: str):
     contracts = client.get_option_contracts(req)
 
     if not contracts.option_contracts:
+        # Fallback: try up to 7 days if no 2-5 DTE contracts found
+        req2 = GetOptionContractsRequest(
+            underlying_symbols=["SPY"],
+            expiration_date_gte=today_str,
+            expiration_date_lte=(today + timedelta(days=7)).strftime("%Y-%m-%d"),
+            type=contract_type,
+            strike_price_gte=strike_lo,
+            strike_price_lte=strike_hi,
+            limit=20
+        )
+        contracts = client.get_option_contracts(req2)
+
+    if not contracts.option_contracts:
         print(
             f"[OPTIONS] No ATM contracts found (strikes ${strike_lo}–${strike_hi}).")
         return None, 0
 
-    # Sort by closest to ATM
+    # Sort by: 1) expiry ascending (prefer more time), 2) closest ATM strike
     sorted_contracts = sorted(
         contracts.option_contracts,
-        key=lambda c: abs(float(c.strike_price) - spy_price)
+        key=lambda c: (c.expiration_date, abs(float(c.strike_price) - spy_price))
     )
 
     best = sorted_contracts[0]
     print(
-        f"[OPTIONS] Selected: {best.name} | Strike: ${float(best.strike_price):.2f}")
+        f"[OPTIONS] Selected: {best.name} | Strike: ${float(best.strike_price):.2f} | Expiry: {best.expiration_date}")
 
     # Get live ask price for accurate cost calculation
     try:
