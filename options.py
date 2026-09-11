@@ -72,7 +72,8 @@ def get_spy_option(signal: str):
         req2 = GetOptionContractsRequest(
             underlying_symbols=["SPY"],
             expiration_date_gte=today_str,
-            expiration_date_lte=(today + timedelta(days=7)).strftime("%Y-%m-%d"),
+            expiration_date_lte=(today + timedelta(days=7)
+                                 ).strftime("%Y-%m-%d"),
             type=contract_type,
             strike_price_gte=strike_lo,
             strike_price_lte=strike_hi,
@@ -88,7 +89,8 @@ def get_spy_option(signal: str):
     # Sort by: 1) expiry ascending (prefer more time), 2) closest ATM strike
     sorted_contracts = sorted(
         contracts.option_contracts,
-        key=lambda c: (c.expiration_date, abs(float(c.strike_price) - spy_price))
+        key=lambda c: (c.expiration_date, abs(
+            float(c.strike_price) - spy_price))
     )
 
     best = sorted_contracts[0]

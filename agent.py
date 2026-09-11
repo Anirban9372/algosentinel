@@ -205,17 +205,21 @@ def run_agent():
     # Step 5: Calculate quantity from max_spend
     # Alpaca hard limits: max 1000 contracts, max $50M notional
     ALPACA_MAX_QTY = 1000
-    MIN_ASK_PRICE  = 0.10   # skip penny options — they generate huge qty and hit notional limits
+    # skip penny options — they generate huge qty and hit notional limits
+    MIN_ASK_PRICE = 0.10
 
     if ask_price < MIN_ASK_PRICE:
-        log("OPTIONS", f"Ask ${ask_price:.2f} is too low (< ${MIN_ASK_PRICE}) — skipping to avoid notional overflow")
-        log_trade(f"SKIP — ask price ${ask_price:.2f} too low for {contract.symbol}")
+        log("OPTIONS",
+            f"Ask ${ask_price:.2f} is too low (< ${MIN_ASK_PRICE}) — skipping to avoid notional overflow")
+        log_trade(
+            f"SKIP — ask price ${ask_price:.2f} too low for {contract.symbol}")
         return
 
     cost_per_contract = ask_price * CONTRACT_MULTIPLIER
     qty = max(1, math.floor(max_spend / cost_per_contract))
     qty = min(qty, ALPACA_MAX_QTY)   # never exceed Alpaca's 1000-contract cap
-    log("TRADE", f"Placing order: {qty}x {contract.symbol} @ ${ask_price:.2f} (cost: ${qty * cost_per_contract:.2f})")
+    log("TRADE",
+        f"Placing order: {qty}x {contract.symbol} @ ${ask_price:.2f} (cost: ${qty * cost_per_contract:.2f})")
 
     # Step 6: Execute
     try:
